@@ -12,13 +12,14 @@
         src: nginx.conf
         dest: /etc/nginx/nginx.conf
 
-    - name: Setup NodeJS repo
-      ansible.builtin.shell: curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+# Since npm build is failing, we moved to download the direct compiled code.
+#     - name: Setup NodeJS repo
+#       ansible.builtin.shell: curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
 
-    - name: Install NodejS
-      ansible.builtin.dnf:
-        name: nodejs
-        state: present
+#     - name: Install NodejS
+#       ansible.builtin.dnf:
+#         name: nodejs
+#         state: present
 
     - name: Remove App content folder
       ansible.builtin.file:
