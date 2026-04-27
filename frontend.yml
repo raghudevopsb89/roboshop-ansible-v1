@@ -7,3 +7,44 @@
         name: nginx
         state: present
 
+    - name: Copy ansible configuration file
+      ansible.builtin.copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+
+    - name: Setup NodeJS repo
+      ansible.builtin.shell: curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+
+    - name: Install NodejS
+      ansible.builtin.dnf:
+        name: nodejs
+        state: present
+
+    - name: Remove App content folder
+      ansible.builtin.file:
+        path: /tmp/frontend
+        state: absent
+
+    - name: Create App content folder
+      ansible.builtin.file:
+        path: /tmp/frontend
+        state: directory
+
+    - name: Download frontend content
+      ansible.builtin.unarchive:
+        src: https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/frontend.zip
+        dest: /tmp/frontend
+        remote_src: yes
+
+    - name: Build static code
+      ansible.builtin.shell: npm install ; npm run build ; rm -rf /usr/share/nginx/html/* ; cp -r out/* /usr/share/nginx/html/
+      args:
+        chdir: /tmp/frontend
+
+    - name: Start Nginx
+      ansible.builtin.systemd_service:
+        name: nginx
+        state: restarted
+        enabled: yes
+
+
