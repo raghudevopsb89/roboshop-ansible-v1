@@ -32,7 +32,7 @@
 
     - name: Download frontend content
       ansible.builtin.unarchive:
-        src: https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/frontend.zip
+        src: https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/frontend-compiled.zip
         dest: /usr/share/nginx/html
         remote_src: yes
 
